@@ -1,0 +1,6 @@
+.env
+.git
+uploads/*
+!uploads/.gitkeep
+!uploads/.htaccess
+*service-account*.json

@@ -1,0 +1,52 @@
+# ---------------------------------------------------------------------------
+# Studious API — Apache configuration (XAMPP and the Render Docker image)
+# Sends every request that is not a real file to api.php, which does the routing.
+# ---------------------------------------------------------------------------
+Options -Indexes -MultiViews
+DirectoryIndex api.php
+AcceptPathInfo On
+
+# Never expose secrets, container files, logs or database dumps
+<FilesMatch "^(\.(?!well-known)|Dockerfile|docker-entrypoint\.sh|\.dockerignore)|\.(env|log|sql|md|ya?ml|lock|sh|bak|ini)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set Referrer-Policy "no-referrer"
+</IfModule>
+
+# Uploaded files / large bodies (php.ini may override these on shared hosts)
+<IfModule mod_php.c>
+    php_value upload_max_filesize 20M
+    php_value post_max_size 24M
+    php_flag display_errors off
+</IfModule>
+<IfModule mod_php8.c>
+    php_value upload_max_filesize 20M
+    php_value post_max_size 24M
+    php_flag display_errors off
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Hand the Authorization header (Bearer token) to PHP — Apache strips it by default
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Uploaded files are only served through GET /download (signed + subscription-checked)
+    RewriteRule ^uploads(/|$) - [F,L]
+
+    # Everything that is not an existing file or directory goes to the router
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ api.php [L,QSA]
+</IfModule>
