@@ -1,0 +1,9 @@
+# Only used when the frontend is served by XAMPP/Apache during development.
+Options -Indexes
+DirectoryIndex index.html
+<FilesMatch "^\.(?!well-known)|\.(env|md)$">
+    Require all denied
+</FilesMatch>
+<IfModule mod_headers.c>
+    Header set Cache-Control "no-cache"
+</IfModule>
