@@ -1,0 +1,24 @@
+# Netlify: set "Base directory" to  frontend  in the site settings (this file lives there).
+[build]
+  publish = "."
+  command = "node build.js"
+
+# The app uses hash routing (#/dashboard), so no SPA rewrite is required.
+# Paystack returns customers to the site root (/?reference=...), which app.js handles.
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/config.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"

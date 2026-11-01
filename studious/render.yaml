@@ -1,0 +1,56 @@
+# Render Blueprint — deploys the Studious API (backend/) as a Docker web service.
+# Database: Clever Cloud MySQL (external). Frontend: Netlify (see frontend/netlify.toml).
+# Every "sync: false" value is entered once in the Render dashboard (or supplied as a Secret File named ".env").
+services:
+  - type: web
+    name: studious-api
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /health
+    envVars:
+      - key: APP_NAME
+        value: Studious
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_TIMEZONE
+        value: Africa/Lagos
+      - key: APP_KEY
+        generateValue: true
+      - key: FRONTEND_URL          # e.g. https://studious.netlify.app
+        sync: false
+      - key: ALLOWED_ORIGINS       # e.g. https://studious.netlify.app
+        sync: false
+      - key: API_URL               # this service's public URL, e.g. https://studious-api.onrender.com
+        sync: false
+      - key: DB_HOST               # from Clever Cloud: MYSQL_ADDON_HOST
+        sync: false
+      - key: DB_PORT
+        value: "3306"
+      - key: DB_NAME               # MYSQL_ADDON_DB
+        sync: false
+      - key: DB_USER               # MYSQL_ADDON_USER
+        sync: false
+      - key: DB_PASS               # MYSQL_ADDON_PASSWORD
+        sync: false
+      - key: AUTO_SETUP
+        value: "true"
+      - key: SEED_DEMO_DATA
+        value: "false"
+      - key: ADMIN_NAME
+        value: Studious Admin
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: TOKEN_TTL_DAYS
+        value: "30"
+      - key: PAYSTACK_SECRET_KEY
+        sync: false
+      - key: PAYSTACK_CURRENCY
+        value: NGN
+      - key: GOOGLE_SERVICE_ACCOUNT_JSON
+        sync: false
+      - key: GOOGLE_DRIVE_FOLDER_ID
+        sync: false

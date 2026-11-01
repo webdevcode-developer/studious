@@ -1,0 +1,38 @@
+# Optional: run the API + MySQL locally in Docker instead of XAMPP.
+#   cp backend/.env.example backend/.env   (then edit it)
+#   docker compose up --build
+# API:       http://localhost:8080      Serve the frontend with:  npx serve frontend
+services:
+  api:
+    build: ./backend
+    ports:
+      - "8080:80"
+    env_file:
+      - ./backend/.env
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASS: local_root_password_change_me
+      DB_NAME: studious
+      API_URL: http://localhost:8080
+    volumes:
+      - uploads_data:/var/www/html/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: local_root_password_change_me
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-plocal_root_password_change_me"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+volumes:
+  mysql_data:
+  uploads_data:

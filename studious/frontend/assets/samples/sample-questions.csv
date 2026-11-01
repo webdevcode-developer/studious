@@ -1,0 +1,2 @@
+school,department,level,curriculum_version,course_code,title,exam_year,question_text,options_json,correct_answer,explanation
+Demo University,Computer Science,200,2024/2025,CSC201,Introduction to Algorithms,2024,"Which of the following best describes an algorithm?","{""A"":""A finite sequence of well-defined steps"",""B"":""A computer monitor"",""C"":""A programming language only"",""D"":""A database table""}","A — A finite sequence of well-defined steps","An algorithm is a finite, ordered set of unambiguous instructions for solving a problem."
