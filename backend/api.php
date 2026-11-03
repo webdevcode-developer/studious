@@ -21,17 +21,6 @@ error_reporting(E_ALL);
 const APP_VERSION    = '2.0.0';
 const SCHEMA_VERSION = 1;
 
-// Allow any origin to access this resource
-header("Access-Control-Allow-Origin: https://studious-me.netlify.app");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
-
-// Handle preflight (OPTIONS) requests safely
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(204);
-    exit(0);
-}
-
 /* =========================================================================
  * 1. ENVIRONMENT (.env loader + helpers)
  * ========================================================================= */
