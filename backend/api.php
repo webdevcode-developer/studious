@@ -529,6 +529,34 @@ function seed_demo_content(PDO $pdo): void
         'A — A finite sequence of well-defined steps','An algorithm is a finite, ordered set of unambiguous instructions for solving a problem. The steps should produce a result and terminate.',1
         FROM schools s JOIN departments d ON d.school_id=s.id AND d.name='Computer Science'
         WHERE s.name='Demo University' AND NOT EXISTS(SELECT 1 FROM questions WHERE course_code='CSC201' AND title='Introduction to Algorithms')");
+    
+    // Ladoke Akintola University Of Technology
+    $pdo->exec("INSERT IGNORE INTO schools(name,short_name) VALUES('Ladoke Akintola University Of Technology','LAUTECH')");
+    $pdo->exec("INSERT INTO departments (school_id,name) VALUES
+        -- Faculty of Computing and Informatics
+        ((SELECT id FROM schools WHERE name='Ladoke Akintola University Of Technology'), 'Department of Computer Science'),
+        ((SELECT id FROM schools WHERE name='Ladoke Akintola University Of Technology'), 'Department of Cyber Security Science'),
+        ((SELECT id FROM schools WHERE name='Ladoke Akintola University Of Technology'), 'Department of Information Systems'),
+        
+        -- Faculty of Engineering and Technology
+        ((SELECT id FROM schools WHERE name='Ladoke Akintola University Of Technology'), 'Department of Agricultural Engineering'),
+        ((SELECT id FROM schools WHERE name='Ladoke Akintola University Of Technology'), 'Department of Electrical Engineering'),
+        ((SELECT id FROM schools WHERE name='Ladoke Akintola University Of Technology'), 'Department of Computer Engineering'),
+        ((SELECT id FROM schools WHERE name='Ladoke Akintola University Of Technology'), 'Department of Chemical Engineering'),
+        ((SELECT id FROM schools WHERE name='Ladoke Akintola University Of Technology'), 'Department of Civil Engineering'),
+        
+        -- Faculty of Agricultural Sciences
+        ((SELECT id FROM schools WHERE name='Ladoke Akintola University Of Technology'), 'Department of Agricultural Economics'),
+        ((SELECT id FROM schools WHERE name='Ladoke Akintola University Of Technology'), 'Department of Animal Production and Health'),
+        
+        -- Faculty of Pure and Applied Sciences
+        ((SELECT id FROM schools WHERE name='Ladoke Akintola University Of Technology'), 'Department of Pure and Applied Biology'),
+        ((SELECT id FROM schools WHERE name='Ladoke Akintola University Of Technology'), 'Department of Biochemistry'),
+        
+        -- College of Health Sciences
+        ((SELECT id FROM schools WHERE name='Ladoke Akintola University Of Technology'), 'Department of Anatomy'),
+        ((SELECT id FROM schools WHERE name='Ladoke Akintola University Of Technology'), 'Department of Nursing Science')
+    ");
 }
 
 /* =========================================================================
